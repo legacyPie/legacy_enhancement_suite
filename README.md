@@ -45,6 +45,11 @@ As long as you are not in a text box and press "A", the item will be added to th
 ### Jobs
 - Automatically selects the maximum amount of times you can work with your current turns.
 
+### Flags
+- You can now upload Flags.
+ - Images are converted automatically.
+ - You can choose which part of the image is to be converted to the Flag.
+
 ### Hunting
 - Allows the player to Hunt the same Hunting Group on the same page as the final hit that results in victory.
 - Allows the player to combine a Crystal that just dropped with another if found in your Inventory.
