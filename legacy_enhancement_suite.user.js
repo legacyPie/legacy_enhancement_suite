@@ -27,7 +27,7 @@
 // @include     https://www.legacy-game.net/*
 // @include     https://direct.legacy-game.net/*
 // @include     https://dev.legacy-game.net/*
-// @version     0.0.61
+// @version     0.0.62
 // @grant       none
 // @require     https://raw.githubusercontent.com/nnnick/Chart.js/4aa274d5b2c82e28f7a7b2bb78db23b0429255a1/Chart.js
 // @require     http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js
