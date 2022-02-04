@@ -27,7 +27,7 @@
 // @include     https://www.legacy-game.net/*
 // @include     https://direct.legacy-game.net/*
 // @include     https://dev.legacy-game.net/*
-// @version     0.0.61
+// @version     0.0.62
 // @grant       none
 // @require     https://raw.githubusercontent.com/nnnick/Chart.js/4aa274d5b2c82e28f7a7b2bb78db23b0429255a1/Chart.js
 // @require     http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js
@@ -1211,13 +1211,20 @@ registerFunction(function autoSelectMaxJobs() {
                       CSS Injection
   /****************************************************/
   var custom = "" +
-    "#uploadPanel{height:auto; width:auto; background: red none; border: 5px solid darkred; padding: 5px; position:absolute; top:20px; left:20px; max-height:90%; max-width:90%; padding-right:20px; overflow:auto;}\n" +
-    "#flagOut{border:1px solid #c3c3c3; display:inline-block;}\n" +
-    "#container{position:relative; display:block; height:30px; width:40px; padding:1px;}\n" +
+    "#uploadPanel{height:auto; width:auto; background: #000 none; border: 1px solid #333; position:absolute; top:40px; left:20px; max-height:90%; max-width:90%; overflow:auto;}\n" +
+    "#flagOut{border:1px solid #c3c3c3; display:inline-block; margin-top: 2px;}\n" +
+    "#container{position:relative; display:block; height:30px; width:40px; padding:1px; margin-left: auto; margin-right: auto;}\n" +
     "#rawImage{position: absolute; display:block; z-index:1;}\n" +
     "#getArea{position:absolute; height:30px; width:40px; top:1px; left:1px; border:1px solid red;z-index:2;}\n" +
     "#imageUpload{display:block;}\n" +
-    "#editPanel{display:none;}";
+    "input[type=file]::file-selector-button{font-family: Arial; font-size: 13px; color: #fff; margin: 1px; border: 1px solid #666; border-right-color: #444; border-bottom-color: #444; background: #222 url(https://legacy-game.net/img-bin/button_primary.gif) left center}\n}\n" +
+    "input[type=file]::-webkit-file-upload-button{font-family: Arial; font-size: 13px; color: #fff; margin: 1px; border: 1px solid #666; border-right-color: #444; border-bottom-color: #444; background: #222 url(https://legacy-game.net/img-bin/button_primary.gif) left center}\n}\n" +
+    "input[type=file]{text-align: center; color: #000;}\n" +
+    "#editPanel{display:none;}\n" +
+    "input[type=button]{font-family: Arial; font-size: 13px; color: #fff; margin: 1px; border: 1px solid #666; border-right-color: #444; border-bottom-color: #444; background: #222 url(https://legacy-game.net/img-bin/button_primary.gif) left center}\n"+
+    "#fakeButton{font-family: Arial; font-size: 13px; color: #fff; margin: 10px; border: 1px solid #666; border-right-color: #444; border-bottom-color: #444; background: #222 url(https://legacy-game.net/img-bin/button_primary.gif) left center}\n"+
+    "#header{padding: 2px; margin: 1px; border: 0; background: #333 url(https://legacy-game.net/img-bin/templates/bg-under.gif) top left repeat-x; font-family: Arial; font-size: 13px; color: #ddd; font-weight: 700; text-align: center;}\n" +
+    "#toFlag{display:inline-block;}\n";
 
   create('link', {
     rel: 'stylesheet',
@@ -1234,11 +1241,15 @@ registerFunction(function autoSelectMaxJobs() {
   var panel = create('div', {
     id: 'uploadPanel'
   }, false, document.body);
+  create('p', {
+    id: 'header'
+  }, "LES Flag Upload Tool", panel);
   create('canvas', {
     id: 'flagOut',
     width: '40',
     height: '30'
   }, false, panel);
+  create('br', {}, false, panel);
   create('input', {
     id: 'toFlag',
     type: 'button',
@@ -1297,7 +1308,7 @@ registerFunction(function autoSelectMaxJobs() {
   }, false, container);
   create('input', {
     id: 'imageUpload',
-    type: 'file'
+    type: 'file',
   }, false, panel);
 
   /*****************************************************
