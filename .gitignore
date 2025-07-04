@@ -1,3 +1,4 @@
 # exclude all js files minus the userscript
 *.js
 !*user.js
+!*les-nojq.js
