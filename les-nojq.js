@@ -341,7 +341,6 @@ registerFunction(() => {
       incrementTotalHunts(cookie.hunting_group);
     }
   });
-  console.log(localStorage.hunts);
 }, ['hunting3.php']);
 
 function buildDropList(selectedNPC) {
@@ -386,7 +385,6 @@ function buildDropList(selectedNPC) {
     dropsList.style.marginTop = '5px';
 
     Object.entries(huntObject[selectedNPC].items).forEach(([itemName, quantity]) => {
-      console.log(`${itemName}: ${quantity} out of ${totalHunts}`);
       let dropPercent;
       dropPercent = (quantity/totalHunts*100).toFixed(0) + "%";
       const listItem = document.createElement('li');
