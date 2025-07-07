@@ -345,7 +345,8 @@ registerFunction(() => {
 
 function buildDropList(selectedNPC) {
   // This section creates a new section below the NPC selector
-  // and displays drop stats.
+  // and displays drop stats. selectedNPC should be the hunting
+  // group ID for the hunting group you want to see drops for.
   const targetTd = document.getElementById('group-desc');
   if (targetTd) {
     const lastFormTag = targetTd.querySelector('form:last-of-type');
@@ -540,3 +541,51 @@ function assert(condition, msg) {
 }
 
 executeFunctions(function_registry);
+
+class Item {
+  constructor(name, slot, trades, id) {
+    this.name = name;
+    this.slot = slot;
+    this.trades = trades;
+    this.id = id;
+  }
+}
+
+class Inventory {
+  constructor(items) {
+    this.items = items;
+  }
+}
+
+function createInventory() {
+  const url = `inventory.php`;
+
+  fetch(url, {
+      method: 'GET',
+  })
+  .then(response => {
+      if (!response.ok) {
+          return response.text().then(errorMessage => {
+              throw new Error(`HTTP error! Status: ${response.status} - ${errorMessage}`);
+          });
+      }
+      return response.text();
+  })
+  .then(data => {
+      console.log('Request successful. Response data:', data);
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data, 'text/html');
+      var items = doc.querySelectorAll('.itemicon');
+      for (item of items) {
+        itemId = item.attributes.id.value.split('|')[1];
+        j = new Item(item.attributes.title.value, item.attributes.name.value, 0, itemId)
+        // Uncomment this next line if you want to see all of the objects
+        //console.log(j);
+      }
+  })
+  .catch(error => {
+      console.error('Merge request failed:', error);
+  });
+}
+
+createInventory();
