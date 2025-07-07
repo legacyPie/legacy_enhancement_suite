@@ -344,7 +344,7 @@ registerFunction(() => {
   console.log(localStorage.hunts);
 }, ['hunting3.php']);
 
-function createHeader() {
+function buildDropList(selectedNPC) {
   // This section creates a new section below the NPC selector
   // and displays drop stats.
   const targetTd = document.getElementById('group-desc');
@@ -363,8 +363,44 @@ function createHeader() {
   const sectionTitle = document.createElement('h3');
   sectionTitle.textContent = 'Hunting Drop Statistics';
   sectionTitle.style.marginBottom = '10px';
-  sectionTitle.style.color = '#333'; // Example styling
+  sectionTitle.style.color = fontColor; // Example styling
   displayArea.appendChild(sectionTitle);
+
+  huntObject = loadHuntingDrops();
+
+  const selectedNPCDrops = huntObject[selectedNPC]
+
+  if (selectedNPCDrops) {
+    const totalDrops = selectedNPCDrops.totalDrops;
+    const totalHunts = selectedNPCDrops.totalHunts;
+
+    // Total Hunts and Total Drops
+    const summaryPara = document.createElement('p');
+    summaryPara.innerHTML = `Hunts: <strong>${totalHunts}</strong> | Total Drops: <strong>${totalDrops}</strong>`;
+    summaryPara.style.marginBottom = '8px';
+    displayArea.appendChild(summaryPara);
+
+    const dropsList = document.createElement('ul');
+    dropsList.style.listStyleType = 'none';
+    dropsList.style.paddingLeft = '0';
+    dropsList.style.marginTop = '5px';
+
+    Object.entries(huntObject[selectedNPC].items).forEach(([itemName, quantity]) => {
+      console.log(`${itemName}: ${quantity} out of ${totalHunts}`);
+      let dropPercent;
+      dropPercent = (quantity/totalHunts*100).toFixed(0) + "%";
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `<strong style="color:${fontColor};">${itemName}:</strong> ${quantity} --- ${dropPercent}`;
+      dropsList.appendChild(listItem);
+    });
+
+    displayArea.appendChild(dropsList);
+  } else {
+    const summaryPara = document.createElement('p');
+    summaryPara.innerHTML = "No drops yet.";
+    summaryPara.style.marginBottom = '8px';
+    displayArea.appendChild(summaryPara);
+  };
 }
 
 //
@@ -376,39 +412,7 @@ registerFunction(() => {
   var huntingNPC = selectedNPC[0];
   const config = { childList: true, subtree: true };
 
-  createHeader();
-
-  huntObject = loadHuntingDrops();
-
-  if (Object.keys(huntObject).length > 0) {
-    Object.keys(huntObject).forEach(key => {
-      if (currentlySelectedNPC == key) {
-        totalDrops = huntObject[key].totalDrops;
-        totalHunts = huntObject[key].totalHunts;
-
-        // Total Hunts and Total Drops
-        const summaryPara = document.createElement('p');
-        summaryPara.innerHTML = `Hunts: <strong>${totalHunts}</strong> | Total Drops: <strong>${totalDrops}</strong>`;
-        summaryPara.style.marginBottom = '8px';
-        displayArea.appendChild(summaryPara);
-
-        const dropsList = document.createElement('ul');
-        dropsList.style.listStyleType = 'none';
-        dropsList.style.paddingLeft = '0';
-        dropsList.style.marginTop = '5px';
-
-        Object.entries(huntObject[key].items).forEach(([itemName, quantity]) => {
-          console.log(`${itemName}: ${quantity} out of ${totalHunts}`);
-          dropPercent = (quantity/totalHunts*100).toFixed(0) + "%";
-          const listItem = document.createElement('li');
-          listItem.innerHTML = `<strong style="color:${fontColor};">${itemName}</strong>: ${quantity} drop --- ${dropPercent}`;
-          dropsList.appendChild(listItem);
-        });
-
-        displayArea.appendChild(dropsList);
-      }
-    });
-  }
+  buildDropList(currentlySelectedNPC);
 
   const callback = (mutationList, observer) => {
     for (const mutation of mutationList) {
@@ -417,8 +421,8 @@ registerFunction(() => {
           switchedTo = mutation.addedNodes[0].parentElement.attributes.getNamedItem("data-row").value;
           if (switchedTo != currentlySelectedNPC) {
             currentlySelectedNPC = switchedTo;
-            createHeader();
           }
+          buildDropList(currentlySelectedNPC);
         }
       }
     }
