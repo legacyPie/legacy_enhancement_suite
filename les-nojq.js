@@ -363,7 +363,7 @@ function buildDropList(selectedNPC) {
   const sectionTitle = document.createElement('h3');
   sectionTitle.textContent = 'Hunting Drop Statistics';
   sectionTitle.style.marginBottom = '10px';
-  sectionTitle.style.color = fontColor; // Example styling
+  sectionTitle.style.color = fontColor;
   displayArea.appendChild(sectionTitle);
 
   huntObject = loadHuntingDrops();
@@ -393,6 +393,14 @@ function buildDropList(selectedNPC) {
       listItem.innerHTML = `<strong style="color:${fontColor};">${itemName}:</strong> ${quantity} --- ${dropPercent}`;
       dropsList.appendChild(listItem);
     });
+
+    if (totalDrops != totalHunts) {
+      const nothingDrop = totalHunts - totalDrops;
+      const dropPercent = (nothingDrop/totalHunts*100).toFixed(0) + "%";
+      const listItem = document.createElement('li');
+      listItem.innerHTML = `<strong style="color:${fontColor};">Nothing:</strong> ${nothingDrop} --- ${dropPercent}`;
+      dropsList.appendChild(listItem);
+    }
 
     displayArea.appendChild(dropsList);
   } else {
