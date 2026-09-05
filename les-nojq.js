@@ -587,5 +587,3 @@ function createInventory() {
       console.error('Merge request failed:', error);
   });
 }
-
-createInventory();
